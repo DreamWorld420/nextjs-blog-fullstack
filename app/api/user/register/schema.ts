@@ -1,7 +1,7 @@
 import { InferType, object, string } from "yup";
 
 export const RegisterUserSchema = object({
-	name: string(),
+	name: string().optional(),
 	email: string().email().required("Email is required"),
 	password: string()
 		.min(8, "Password must be at least 8 characters")

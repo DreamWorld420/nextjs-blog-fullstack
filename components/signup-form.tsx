@@ -1,3 +1,7 @@
+"use client";
+
+import { Controller, useForm } from "react-hook-form";
+
 import { Button } from "./ui/button";
 import {
 	Card,
@@ -9,16 +13,50 @@ import {
 import {
 	Field,
 	FieldDescription,
+	FieldError,
 	FieldGroup,
 	FieldLabel,
 } from "./ui/field";
 import { Input } from "./ui/input";
+import { Spinner } from "./ui/spinner";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "sonner";
+import { InferType } from "yup";
+
+import { RegisterUserSchema } from "@/app/api/user/register/schema";
 import { cn } from "@/lib/utils";
 
 export function SignupForm({
 	className,
 	...props
 }: React.ComponentProps<"div">) {
+	const form = useForm({
+		resolver: yupResolver(RegisterUserSchema),
+		defaultValues: {
+			name: "",
+			email: "",
+			password: "",
+		},
+	});
+
+	const onSubmit = async (data: InferType<typeof RegisterUserSchema>) => {
+		const promise = fetch("/api/user/register", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
+		});
+
+		toast.promise(promise, {
+			loading: "Creating your account...",
+			success: "Account created successfully!",
+			error: "Failed to create account. Please try again.",
+		});
+
+		await promise;
+	};
+
 	return (
 		<div className={cn("flex flex-col gap-6", className)} {...props}>
 			<Card>
@@ -29,40 +67,76 @@ export function SignupForm({
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<form>
+					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<FieldGroup>
-							<Field>
-								<FieldLabel htmlFor="name">Full Name</FieldLabel>
-								<Input id="name" type="text" placeholder="John Doe" required />
-							</Field>
-							<Field>
-								<FieldLabel htmlFor="email">Email</FieldLabel>
-								<Input
-									id="email"
-									type="email"
-									placeholder="m@example.com"
-									required
-								/>
-							</Field>
-							<Field>
-								<Field className="grid grid-cols-2 gap-4">
-									<Field>
+							<Controller
+								name="name"
+								control={form.control}
+								render={({ field, fieldState }) => (
+									<Field data-invalid={fieldState.invalid}>
+										<FieldLabel htmlFor="name">Name (Optional)</FieldLabel>
+										<Input
+											{...field}
+											aria-invalid={fieldState.invalid}
+											id="name"
+											type="text"
+											placeholder="John Doe"
+										/>
+										{fieldState.invalid && (
+											<FieldError errors={[fieldState.error]} />
+										)}
+									</Field>
+								)}
+							/>
+
+							<Controller
+								name="email"
+								control={form.control}
+								render={({ field, fieldState }) => (
+									<Field data-invalid={fieldState.invalid}>
+										<FieldLabel htmlFor="email">Email</FieldLabel>
+										<Input
+											{...field}
+											aria-invalid={fieldState.invalid}
+											id="email"
+											placeholder="m@example.com"
+										/>
+										{fieldState.invalid && (
+											<FieldError errors={[fieldState.error]} />
+										)}
+									</Field>
+								)}
+							/>
+
+							<Controller
+								name="password"
+								control={form.control}
+								render={({ field, fieldState }) => (
+									<Field data-invalid={fieldState.invalid}>
 										<FieldLabel htmlFor="password">Password</FieldLabel>
-										<Input id="password" type="password" required />
+										<Input
+											{...field}
+											aria-invalid={fieldState.invalid}
+											id="password"
+											type="password"
+										/>
+										{fieldState.invalid && (
+											<FieldError errors={[fieldState.error]} />
+										)}
+										<FieldDescription>
+											Must be at least 8 characters long.
+										</FieldDescription>
 									</Field>
-									<Field>
-										<FieldLabel htmlFor="confirm-password">
-											Confirm Password
-										</FieldLabel>
-										<Input id="confirm-password" type="password" required />
-									</Field>
-								</Field>
-								<FieldDescription>
-									Must be at least 8 characters long.
-								</FieldDescription>
-							</Field>
+								)}
+							/>
+
 							<Field>
-								<Button type="submit">Create Account</Button>
+								<Button type="submit" disabled={form.formState.isSubmitting}>
+									{form.formState.isSubmitting && <Spinner />}
+									{form.formState.isSubmitting
+										? "Creating Account..."
+										: "Create Account"}
+								</Button>
 								<FieldDescription className="text-center">
 									Already have an account? <a href="#">Sign in</a>
 								</FieldDescription>
@@ -71,10 +145,6 @@ export function SignupForm({
 					</form>
 				</CardContent>
 			</Card>
-			<FieldDescription className="px-6 text-center">
-				By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-				and <a href="#">Privacy Policy</a>.
-			</FieldDescription>
 		</div>
 	);
 }
