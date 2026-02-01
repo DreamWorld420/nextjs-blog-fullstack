@@ -2,6 +2,8 @@
 
 import { Controller, useForm } from "react-hook-form";
 
+import Link from "next/link";
+
 import { Button } from "./ui/button";
 import {
 	Card,
@@ -24,6 +26,7 @@ import { toast } from "sonner";
 import { InferType } from "yup";
 
 import { RegisterUserSchema } from "@/app/api/user/register/schema";
+import { APP_ROUTES } from "@/constants/routes";
 import { cn } from "@/lib/utils";
 
 export function SignupForm({
@@ -138,7 +141,8 @@ export function SignupForm({
 										: "Create Account"}
 								</Button>
 								<FieldDescription className="text-center">
-									Already have an account? <a href="#">Sign in</a>
+									Already have an account?{" "}
+									<Link href={APP_ROUTES.login}>Sign in</Link>
 								</FieldDescription>
 							</Field>
 						</FieldGroup>

@@ -64,8 +64,18 @@ export async function POST(request: NextRequest) {
 		);
 	}
 
-	return NextResponse.json({
+	const response = NextResponse.json({
 		message: "User logged in successfully",
 		token,
 	});
+
+	response.cookies.set("token", token as string, {
+		httpOnly: true, // JS cannot access (prevents XSS)
+		secure: process.env.NODE_ENV === "production", // HTTPS only in prod
+		sameSite: "lax", // CSRF protection
+		path: "/", // available on all routes
+		maxAge: 60 * 60 * 24, // 1 day (in seconds)
+	});
+
+	return response;
 }
