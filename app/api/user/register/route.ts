@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { RegisterUserBody, RegisterUserSchema } from "./schema";
+import bcrypt from "bcrypt";
+
 import { formatYupError } from "@/lib/format-yup-error";
 import prisma from "@/lib/prisma";
-import bcrypt from "bcrypt";
 
 export async function POST(request: NextRequest) {
 	const body = await request.json();
@@ -14,7 +16,7 @@ export async function POST(request: NextRequest) {
 			{
 				errors: formatYupError(error),
 			},
-			{ status: 400 }
+			{ status: 400 },
 		);
 	}
 
@@ -35,12 +37,12 @@ export async function POST(request: NextRequest) {
 				password: true,
 			},
 		});
-	} catch (error) {
+	} catch {
 		return NextResponse.json(
 			{
 				message: "Error creating user",
 			},
-			{ status: 400 }
+			{ status: 400 },
 		);
 	}
 

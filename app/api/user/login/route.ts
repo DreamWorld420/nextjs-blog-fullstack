@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { LoginUserBody, LoginUserSchema } from "./schema";
+import bcrypt from "bcrypt";
+
+import { encodeJWT } from "@/lib/encode-jwt";
 import { formatYupError } from "@/lib/format-yup-error";
 import prisma from "@/lib/prisma";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import { encodeJWT } from "@/lib/encode-jwt";
 
 export async function POST(request: NextRequest) {
 	const body = await request.json();
@@ -16,7 +17,7 @@ export async function POST(request: NextRequest) {
 			{
 				errors: formatYupError(error),
 			},
-			{ status: 400 }
+			{ status: 400 },
 		);
 	}
 
@@ -35,7 +36,7 @@ export async function POST(request: NextRequest) {
 			{
 				message: "user not found",
 			},
-			{ status: 400 }
+			{ status: 400 },
 		);
 	}
 
@@ -46,7 +47,7 @@ export async function POST(request: NextRequest) {
 			{
 				message: "invalid password",
 			},
-			{ status: 400 }
+			{ status: 400 },
 		);
 	}
 
@@ -59,7 +60,7 @@ export async function POST(request: NextRequest) {
 			{
 				message: "Error generating token",
 			},
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 

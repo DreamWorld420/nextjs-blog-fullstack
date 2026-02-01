@@ -9,7 +9,7 @@ export function encodeJWT(payload: string | object | Buffer): Promise<unknown> {
 			(err, token) => {
 				if (err) return reject(err);
 				else return resolve(token);
-			}
+			},
 		);
 	});
 }

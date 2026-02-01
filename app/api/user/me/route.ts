@@ -1,7 +1,8 @@
-import { decodeJWT } from "@/lib/decode-jwt";
-import prisma from "@/lib/prisma";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+
+import { decodeJWT } from "@/lib/decode-jwt";
+import prisma from "@/lib/prisma";
 
 export async function GET() {
 	const headerList = await headers();
@@ -10,7 +11,7 @@ export async function GET() {
 	if (!authHeader) {
 		return NextResponse.json(
 			{ message: "Authorization header missing" },
-			{ status: 403 }
+			{ status: 403 },
 		);
 	}
 
@@ -24,7 +25,7 @@ export async function GET() {
 		if (isNaN(parsedId)) {
 			return NextResponse.json(
 				{ message: "Invalid token payload" },
-				{ status: 403 }
+				{ status: 403 },
 			);
 		}
 
@@ -44,18 +45,18 @@ export async function GET() {
 				{ message: "User not found" },
 				{
 					status: 404,
-				}
+				},
 			);
 		}
 
 		return NextResponse.json(
 			{ message: "User authenticated", data: user[0] },
-			{ status: 200 }
+			{ status: 200 },
 		);
 	} catch (error) {
 		return NextResponse.json(
 			{ message: "Invalid or expired token" },
-			{ status: 403 }
+			{ status: 403 },
 		);
 	}
 }
