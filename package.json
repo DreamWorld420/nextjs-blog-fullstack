@@ -6,9 +6,9 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "eslint . --quiet --cache --ignore-pattern \"/node_modules\" --ignore-pattern \"/.next\"",
-		"lint:fix": "eslint . --fix --quiet --cache --ignore-pattern \"/node_modules\" --ignore-pattern \"/.next\"",
-		"format": "npx prettier . --write",
+		"lint": "eslint . --quiet --cache",
+		"lint:fix": "eslint . --fix --quiet --cache",
+		"format": "prettier . --write",
 		"prepare": "husky"
 	},
 	"dependencies": {
