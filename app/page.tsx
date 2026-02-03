@@ -1,19 +1,54 @@
+import { cookies } from "next/headers";
+import Link from "next/link";
+
+import BlogPostItem from "@/components/blog-post-item";
+import { Button } from "@/components/ui/button";
+import { APP_ROUTES } from "@/constants/routes";
 import prisma from "@/lib/prisma";
 
 export default async function Home() {
-	const users = await prisma.user.findMany();
+	const posts = await prisma.post.findMany({
+		where: {
+			published: true,
+		},
+		include: {
+			author: {
+				omit: {
+					password: true,
+				},
+			},
+		},
+	});
+
+	const token = (await cookies()).get("token")?.value;
+
 	return (
-		<div className="-mt-16 flex min-h-screen flex-col items-center justify-center bg-gray-50">
-			<h1 className="mb-8 font-[family-name:var(--font-geist-sans)] text-4xl font-bold text-[#333333]">
-				Superblog
-			</h1>
-			<ol className="list-inside list-decimal font-[family-name:var(--font-geist-sans)]">
-				{users.map((user) => (
-					<li key={user.id} className="mb-2">
-						{user.name}
-					</li>
+		<div className="container mx-auto flex h-svh flex-col">
+			<nav className="flex items-center justify-between pt-5">
+				<h1 className="text-2xl font-bold">SuperBlog</h1>
+				<div className="flex gap-2">
+					{token ? (
+						<Link href={APP_ROUTES.dashboard}>
+							<Button>Dashboard</Button>
+						</Link>
+					) : (
+						<>
+							<Link href={APP_ROUTES.login}>
+								<Button variant={"outline"}>Login</Button>
+							</Link>
+							<Link href={APP_ROUTES.signup}>
+								<Button>Register</Button>
+							</Link>
+						</>
+					)}
+				</div>
+			</nav>
+
+			<main className="mt-20 flex flex-col">
+				{posts.map((post) => (
+					<BlogPostItem post={post} />
 				))}
-			</ol>
+			</main>
 		</div>
 	);
 }

@@ -3,6 +3,7 @@
 import { Controller, useForm } from "react-hook-form";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -21,6 +22,7 @@ export function LoginForm({
 	className,
 	...props
 }: React.ComponentProps<"div">) {
+	const router = useRouter();
 	const form = useForm({
 		resolver: yupResolver(LoginUserSchema),
 		defaultValues: {
@@ -40,6 +42,7 @@ export function LoginForm({
 			if (response.ok) {
 				response.json().then((data) => {
 					localStorage.setItem("token", data.token);
+					router.push(APP_ROUTES.dashboard);
 				});
 			} else {
 				throw new Error("Login failed");
