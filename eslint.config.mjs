@@ -7,7 +7,13 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
-	globalIgnores(["node_modules/*", ".next/*"]),
+	globalIgnores([
+		"node_modules/*",
+		".next/*",
+		"yarn.lock",
+		"package-lock.json",
+		"pnpm-lock.yaml",
+	]),
 	{
 		files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
 		ignores: ["node_modules/*", ".next/*"],
