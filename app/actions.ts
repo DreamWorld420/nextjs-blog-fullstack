@@ -1,5 +1,8 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
+import { APP_ROUTES } from "@/constants/routes";
 import prisma from "@/lib/prisma";
 
 export async function editPost(data: FormData) {
@@ -30,4 +33,16 @@ export async function createPost(data: FormData) {
 			authorId: Number(authorId),
 		},
 	});
+}
+
+export async function deletePost(data: FormData) {
+	const id = data.get("id") as string;
+
+	await prisma.post
+		.delete({
+			where: { id: Number(id) },
+		})
+		.then(() => {
+			revalidatePath(APP_ROUTES.dashboard);
+		});
 }

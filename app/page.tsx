@@ -34,7 +34,7 @@ export default async function Home() {
 					) : (
 						<>
 							<Link href={APP_ROUTES.login}>
-								<Button variant={"outline"}>Login</Button>
+								<Button variant="outline">Login</Button>
 							</Link>
 							<Link href={APP_ROUTES.signup}>
 								<Button>Register</Button>
@@ -46,7 +46,7 @@ export default async function Home() {
 
 			<main className="mt-20 flex flex-col">
 				{posts.map((post) => (
-					<BlogPostItem post={post} />
+					<BlogPostItem post={post} key={post.id} />
 				))}
 			</main>
 		</div>

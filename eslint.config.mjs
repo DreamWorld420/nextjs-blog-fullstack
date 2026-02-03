@@ -16,21 +16,19 @@ export default defineConfig([
 	pluginJs.configs.recommended,
 	...tseslint.configs.recommended,
 	pluginReact.configs.flat.recommended,
+	preferAlias.configs.recommended,
 	{
-		plugins: {
-			"@dword-design/import-alias": preferAlias,
-		},
-		rules: {
-			"@dword-design/import-alias/prefer-alias": [
-				"error",
-				{
-					alias: {
-						"@/public": "./public",
-						"@": "./",
-					},
-				},
-			],
-		},
+		// rules: {
+		// 	"@dword-design/import-alias/prefer-alias": [
+		// 		"error",
+		// 		{
+		// 			alias: {
+		// 				"@/public": "./public",
+		// 				"@": "./",
+		// 			},
+		// 		},
+		// 	],
+		// },
 	},
 	{
 		plugins: {

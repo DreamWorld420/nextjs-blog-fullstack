@@ -40,7 +40,7 @@ export default function EditPostForm({
 				/>
 			</div>
 			<div className="grow" data-color-mode="light">
-				<MDEditor value={value} height={"100%"} onChange={setValue} />
+				<MDEditor value={value} height="100%" onChange={setValue} />
 			</div>
 			<div className="flex justify-end">
 				<Button

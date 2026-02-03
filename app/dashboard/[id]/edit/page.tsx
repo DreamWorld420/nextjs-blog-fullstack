@@ -1,9 +1,6 @@
 import { cookies } from "next/headers";
 
-import MDEditor from "@uiw/react-md-editor";
-
 import EditPostForm from "@/components/edit-post-form";
-import { Input } from "@/components/ui/input";
 import { decodeJWT } from "@/lib/decode-jwt";
 import prisma from "@/lib/prisma";
 

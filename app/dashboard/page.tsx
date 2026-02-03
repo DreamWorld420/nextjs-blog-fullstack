@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import PostTable from "@/components/post-table";
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/data-table";
 import { APP_ROUTES } from "@/constants/routes";
 import { decodeJWT } from "@/lib/decode-jwt";
 import prisma from "@/lib/prisma";

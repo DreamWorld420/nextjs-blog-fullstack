@@ -1,7 +1,6 @@
 "use client";
 
 import { Card, CardContent, CardHeader } from "./ui/card";
-import { Sheet } from "./ui/sheet";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 
 import { Post, User } from "@/app/generated/prisma/client";
@@ -12,7 +11,7 @@ export default function BlogPostItem({
 	post: Post & { author: Omit<User, "password"> };
 }) {
 	return (
-		<div key={post.id}>
+		<div>
 			<Card>
 				<CardHeader className="border-b border-solid border-black/10">
 					<div className="flex items-center justify-between">

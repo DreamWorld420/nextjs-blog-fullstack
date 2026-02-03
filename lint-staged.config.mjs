@@ -1,3 +1,4 @@
 export default {
-	"./**/*.{ts,tsx,js,jsx}": ["yarn format", "yarn lint:fix"],
+	"./**/*.{ts,tsx,js,jsx}": ["pnpm format", "pnpm lint:fix"],
+	"./*.{json,md,css}": "pnpm format",
 };

@@ -5,7 +5,10 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { DataTable } from "./ui/data-table";
 import { createColumnHelper } from "@tanstack/react-table";
+import { Edit, Eye, Trash } from "lucide-react";
+import { toast } from "sonner";
 
+import { deletePost } from "@/app/actions";
 import { Post } from "@/app/generated/prisma/client";
 import { APP_ROUTES } from "@/constants/routes";
 
@@ -30,18 +33,36 @@ export default function PostTable(props: PostTableProps) {
 				return (
 					<div className="space-x-2">
 						<Link href={APP_ROUTES.singlePost(row.original.id)}>
-							<Button variant={"outline"}>View</Button>
+							<Button variant="outline">
+								<Eye />
+								View
+							</Button>
 						</Link>
 						<Link href={APP_ROUTES.singlePostEdit(row.original.id)}>
-							<Button variant={"outline"}>Edit</Button>
+							<Button variant="outline">
+								<Edit />
+								Edit
+							</Button>
 						</Link>
 
 						<Button
-							variant={"destructive"}
-							onClick={() => {
-								alert(`Delete post with ID: ${row.original.id}`);
+							variant="destructive"
+							onClick={async () => {
+								const formData = new FormData();
+								formData.append("id", row.original.id.toString());
+
+								const promise = deletePost(formData);
+
+								toast.promise(promise, {
+									loading: "Deleting post...",
+									success: "Post deleted successfully!",
+									error: "Failed to delete post.",
+								});
+
+								await promise;
 							}}
 						>
+							<Trash />
 							Delete
 						</Button>
 					</div>
