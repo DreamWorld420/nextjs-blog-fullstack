@@ -14,10 +14,10 @@ export default defineConfig([
 		"package-lock.json",
 		"pnpm-lock.yaml",
 	]),
-	{
-		files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
-		ignores: ["node_modules/*", ".next/*"],
-	},
+	// {
+	// 	files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
+	// 	ignores: ["node_modules/*", ".next/*"],
+	// },
 	{ languageOptions: { globals: { ...globals.browser, ...globals.node } } },
 	pluginJs.configs.recommended,
 	...tseslint.configs.recommended,
