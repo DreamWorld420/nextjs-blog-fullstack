@@ -19,6 +19,8 @@ export async function editPost(data: FormData) {
 			authorId: Number(authorId),
 		},
 	});
+
+	revalidatePath(APP_ROUTES.dashboard);
 }
 
 export async function createPost(data: FormData) {
@@ -33,6 +35,8 @@ export async function createPost(data: FormData) {
 			authorId: Number(authorId),
 		},
 	});
+
+	revalidatePath(APP_ROUTES.dashboard);
 }
 
 export async function deletePost(data: FormData) {
@@ -45,4 +49,18 @@ export async function deletePost(data: FormData) {
 		.then(() => {
 			revalidatePath(APP_ROUTES.dashboard);
 		});
+}
+
+export async function togglePublishPost(data: FormData) {
+	const id = data.get("id") as string;
+	const published = data.get("published") === "true";
+
+	await prisma.post.update({
+		where: { id: Number(id) },
+		data: {
+			published: published,
+		},
+	});
+
+	revalidatePath(APP_ROUTES.dashboard);
 }

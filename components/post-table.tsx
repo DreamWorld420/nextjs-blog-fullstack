@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import PublishCheckbox from "./publish-checkbox";
 import { Button } from "./ui/button";
 import { DataTable } from "./ui/data-table";
 import { createColumnHelper } from "@tanstack/react-table";
@@ -25,7 +26,12 @@ export default function PostTable(props: PostTableProps) {
 		}),
 		columnsHelper.accessor("published", {
 			header: "Published",
-			cell: ({ getValue }) => (getValue() ? "Yes" : "No"),
+			cell: ({ getValue, row }) => (
+				<PublishCheckbox
+					checked={getValue()}
+					postId={row.original.id.toString()}
+				/>
+			),
 		}),
 		columnsHelper.display({
 			id: "actions",
