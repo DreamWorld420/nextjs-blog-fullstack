@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
+export async function POST() {
 	const response = new NextResponse(
 		JSON.stringify({ message: "Logged out successfully" }),
 		{
@@ -11,13 +11,15 @@ export async function POST(request: NextRequest) {
 		},
 	);
 
-	response.cookies.set("token", "", {
-		httpOnly: true, // JS cannot access (prevents XSS)
-		secure: process.env.NODE_ENV === "production", // HTTPS only in prod
-		sameSite: "lax", // CSRF protection
-		path: "/", // available on all routes
-		maxAge: 0, // immediately expire the cookie
-	});
+	response.cookies.delete("token");
+
+	// response.cookies.set("token", "", {
+	// 	httpOnly: true, // JS cannot access (prevents XSS)
+	// 	secure: process.env.NODE_ENV === "production", // HTTPS only in prod
+	// 	sameSite: "lax", // CSRF protection
+	// 	path: "/", // available on all routes
+	// 	maxAge: 0, // immediately expire the cookie
+	// });
 
 	return response;
 }

@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import PostTable from "@/components/post-table";
 import { Button } from "@/components/ui/button";
@@ -8,15 +9,30 @@ import { decodeJWT } from "@/lib/decode-jwt";
 import prisma from "@/lib/prisma";
 
 export default async function DashboardPage() {
-	const token = (await cookies()).get("token")?.value as string;
+	let token;
+	try {
+		token = (await cookies()).get("token")?.value as string;
+	} catch {
+		redirect(APP_ROUTES.login);
+	}
 
-	const id = ((await decodeJWT(token)) as any).id;
+	let id;
+	try {
+		id = ((await decodeJWT(token)) as any).id;
+	} catch {
+		redirect(APP_ROUTES.login);
+	}
 
-	const posts = await prisma.post.findMany({
-		where: {
-			authorId: id,
-		},
-	});
+	let posts;
+	try {
+		posts = await prisma.post.findMany({
+			where: {
+				authorId: id,
+			},
+		});
+	} catch {
+		redirect(APP_ROUTES.login);
+	}
 
 	return (
 		<div className="flex flex-col gap-4 p-5">
