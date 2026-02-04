@@ -14,7 +14,7 @@ export default async function DashboardLayout({
 
 	if (!token) redirect(APP_ROUTES.login);
 
-	await fetch("http://localhost:3000/api/user/me", {
+	await fetch(`${process.env.API_ENDPOINT}/api/user/me`, {
 		method: "GET",
 		headers: { authorization: `Bearer ${token}` },
 	}).then((res) => {

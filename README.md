@@ -71,6 +71,9 @@ A modern, full-stack blog application built with Next.js, React, TypeScript, and
 
    # JWT
    JWT_SECRET="your-secret-key-here"
+
+    # API endpoint
+    API_ENDPOINT="your-deployed-or-local-url"
    ```
 
 4. **Initialize the database**
@@ -187,3 +190,4 @@ pnpm start
 | -------------- | --------------------------------- | --------------------------------------------------- |
 | `DATABASE_URL` | PostgreSQL connection string      | `postgresql://user:password@localhost:5432/blog_db` |
 | `JWT_SECRET`   | Secret key for signing JWT tokens | Any random string                                   |
+| `API_ENDPOINT` | deployed or local url             | `http://localhost:3000`                             |
