@@ -4,12 +4,16 @@ A modern, full-stack blog application built with Next.js, React, TypeScript, and
 
 ## 🚀 Features
 
-- **User Authentication**: Secure JWT-based login and registration with bcrypt password hashing
-- **Blog Management**: Create, edit, and publish blog posts with a rich markdown editor
-- **Dashboard**: Manage your posts with a data table interface showing published status
-- **Responsive Design**: Mobile-friendly UI built with Tailwind CSS and Shadcn UI components
-- **Markdown Editor**: Integrated markdown editor with live preview
-- **Database ORM**: Type-safe database queries with Prisma
+- [ ] User Auth
+  - [x] Register
+  - [x] Login
+  - [x] GetMe (get information about current user)
+  - [x] Logout
+- [x] Blog Management
+- [x] Dashboard
+- [ ] Minor styling changes in Main page
+- [ ] Change sidebar content to be relative
+- [ ] Logout flow implementation (so user be able to logout)
 
 ## 🛠️ Tech Stack
 
