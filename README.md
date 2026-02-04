@@ -1,36 +1,189 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SuperBlog - Full Stack Blog Application
 
-## Getting Started
+A modern, full-stack blog application built with Next.js, React, TypeScript, and PostgreSQL. Create, edit, and publish blog posts with a Shadcn UI and secure authentication system.
 
-First, run the development server:
+## 🚀 Features
+
+- **User Authentication**: Secure JWT-based login and registration with bcrypt password hashing
+- **Blog Management**: Create, edit, and publish blog posts with a rich markdown editor
+- **Dashboard**: Manage your posts with a data table interface showing published status
+- **Responsive Design**: Mobile-friendly UI built with Tailwind CSS and Shadcn UI components
+- **Markdown Editor**: Integrated markdown editor with live preview
+- **Database ORM**: Type-safe database queries with Prisma
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- **Next.js 16**: React framework with App Router
+- **React 19**: UI library
+- **TypeScript**: Type safety
+- **Tailwind CSS 4**: Utility-first CSS framework
+- **Shadcn UI**: Unstyled accessible components
+- **React Hook Form**: Form state management
+- **Yup**: Schema validation
+
+### Backend
+
+- **Next.js API Routes and Server Actions**: Serverless backend
+- **Prisma**: ORM for database management
+- **PostgreSQL**: Relational database
+- **JWT**: Authentication tokens
+- **Bcrypt**: Password hashing
+
+### Development Tools
+
+- **pnpm**: Package manager
+- **ESLint**: Code linting
+- **Prettier**: Code formatting
+- **Husky**: Git hooks
+- **lint-staged**: Run linters on staged files
+- **TypeScript ESLint**: TypeScript linting rules
+
+## 📋 Prerequisites
+
+- **Node.js**: Version 18+ (uses pnpm)
+- **PostgreSQL**: Database server
+- **pnpm**: Package manager (yarn@4.12.0 also supported)
+
+## 🔧 Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/DreamWorld420/nextjs-blog-fullstack
+   cd nextjs-blog-fullstack
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Set up environment variables**
+
+   Create a `.env.local` file in the root directory:
+
+   ```env
+   # Database
+   DATABASE_URL="postgresql://user:password@localhost:5432/blog_db"
+
+   # JWT
+   JWT_SECRET="your-secret-key-here"
+   ```
+
+4. **Initialize the database**
+
+   ```bash
+   pnpm exec prisma migrate dev
+
+    pnpm exec prisma generate
+   ```
+
+   This will:
+   - Create the database schema
+   - Run all migrations
+   - Generate the Prisma client
+
+## 🚀 Development
+
+Start the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application will be available at [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Database Management
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Prisma Studio**: Explore and manage your database visually
 
-## Learn More
+  ```bash
+  pnpm exec prisma studio
+  ```
 
-To learn more about Next.js, take a look at the following resources:
+- **Create a new migration** (after modifying `schema.prisma`):
+  ```bash
+  pnpm exec prisma migrate dev --name <migration-name>
+  ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📦 Build & Production
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Build the application:
 
-## Deploy on Vercel
+```bash
+pnpm build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Start the production server:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm start
+```
+
+## 🧹 Code Quality
+
+- **Lint code**:
+
+  ```bash
+  pnpm lint
+  ```
+
+- **Fix linting issues**:
+
+  ```bash
+  pnpm lint:fix
+  ```
+
+- **Format code**:
+  ```bash
+  pnpm format
+  ```
+
+## 📚 API Endpoints
+
+### Authentication
+
+- `POST /api/user/register` - Create a new user account
+- `POST /api/user/login` - User login
+- `POST /api/user/logout` - User logout
+- `GET /api/user/me` - Get current user information
+
+### Database Schema
+
+**User Model**
+
+- `id` (Int, Primary Key): Unique user identifier
+- `email` (String, Unique): User email address
+- `name` (String, Optional): User full name
+- `password` (String): Hashed password
+- `posts` (Post[]): User's blog posts
+
+**Post Model**
+
+- `id` (Int, Primary Key): Unique post identifier
+- `title` (String): Post title
+- `content` (String, Optional): Post content in markdown format
+- `published` (Boolean): Publication status
+- `authorId` (Int, Foreign Key): Author's user ID
+- `author` (User): Author relationship
+- `createdAt` (DateTime): Post creation timestamp
+- `updatedAt` (DateTime, Optional): Post last update timestamp
+
+## 🔐 Authentication Flow
+
+1. User registers with email and password
+2. Password is hashed with bcrypt
+3. User logs in with credentials
+4. Server validates password and generates JWT token
+5. JWT token is stored in secure HTTP-only cookies
+6. Protected routes verify token on each request
+
+## 🌐 Environment Variables
+
+| Variable       | Description                       | Example                                             |
+| -------------- | --------------------------------- | --------------------------------------------------- |
+| `DATABASE_URL` | PostgreSQL connection string      | `postgresql://user:password@localhost:5432/blog_db` |
+| `JWT_SECRET`   | Secret key for signing JWT tokens | Any random string                                   |
